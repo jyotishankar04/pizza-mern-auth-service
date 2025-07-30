@@ -1,0 +1,23 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyotishankar04/pizza-mern-auth-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jyotishankar04/pizza-mern-auth-service/issues"
+  },
+  "homepage": "https://github.com/jyotishankar04/pizza-mern-auth-service#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "typescript": "^5.8.3"
+  }
+}
