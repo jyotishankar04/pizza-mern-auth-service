@@ -1,10 +1,10 @@
 import { config } from "dotenv";
 
-config()
+config();
 
-const { NODE_ENV,PORT } = process.env;
+const { NODE_ENV, PORT } = process.env;
 
 export const _config = {
     NODE_ENV,
-    PORT
-} as const
+    PORT,
+} as const;
