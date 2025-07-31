@@ -76,7 +76,7 @@ describe("POST /auth/register", () => {
             expect(users[0].firstName).toBe(payload.firstName);
             expect(users[0].lastName).toBe(payload.lastName);
             expect(users[0].email).toBe(payload.email);
-            expect(users[0].password).toBe(payload.password);
+            expect(users[0].password).not.toBe(payload.password);
         });
         it("should return registered user's id", async () => {
             // AAA
@@ -114,6 +114,50 @@ describe("POST /auth/register", () => {
             const users = await userRepository.find();
             expect(users[0]).toHaveProperty("role");
             expect(users[0].role).toBe("customer");
+        });
+        it("should hash password", async () => {
+            // AAA
+            // Arrange
+            const payload = {
+                firstName: "Subham",
+                lastName: "Gupta",
+                email: "subhamgupta@me.com",
+                password: "password",
+            };
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users[0]).toHaveProperty("password");
+            expect(users[0].password).not.toBe(payload.password);
+            expect(users[0].password).toHaveLength(60);
+            expect(users[0].password).toMatch(/^\$2b\$\d+\$/)
+        })
+        it("should store unique, lowercase and valid email", async () => {
+            // AAA
+            // Arrange
+            const userRepository = connection.getRepository(User);
+            const payload = {
+                firstName: "Subham",
+                lastName: "Gupta",
+                email: "subhamGupta@me.com".toLocaleLowerCase(),
+                password: "password",
+                role: "customer",
+            };
+            await userRepository.save(payload);
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            const users = await userRepository.find();
+            expect(response.statusCode).toBe(400);
+            expect(users.length).toBe(1);
+            expect(users[0].email).toBe(payload.email);
+            expect(users[0].email).toBe(payload.email.toLocaleLowerCase());
         })
     });
 
