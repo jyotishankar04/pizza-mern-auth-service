@@ -11,7 +11,10 @@
         "dev": "nodemon",
         "build": "tsc",
         "start": "node dist/server.js",
-        "test": "jest"
+        "test": "jest",
+        "db:start": "docker run --rm --name pizzadb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v pgdata:/var/lib/postgresql/data  -d postgres",
+        "docker:dev:build": " docker build -t auth-service:dev -f docker/dev/Dockerfile .",
+        "docker:dev:run": "docker run --rm -it -v ${PWD}:/usr/src/app -v /usr/src/app/node_modules --env-file ${PWD}/.env -p 5000:5000 -e NODE_ENV=development -e CHOKIDAR_USEPOLLING=true auth-service:dev"
     },
     "author": "",
     "license": "ISC",
@@ -36,7 +39,10 @@
         "dotenv": "^17.2.1",
         "express": "^5.1.0",
         "http-errors": "^2.0.0",
+        "pg": "^8.16.3",
+        "reflect-metadata": "^0.2.2",
         "supertest": "^7.1.4",
+        "typeorm": "^0.3.25",
         "winston": "^3.17.0"
     }
 }
