@@ -5,7 +5,8 @@ config({
     path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
 });
 
-const { NODE_ENV, PORT, DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
+const { NODE_ENV, PORT, DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } =
+    process.env;
 
 export const _config = {
     NODE_ENV,
@@ -14,5 +15,5 @@ export const _config = {
     DB_PORT,
     DB_NAME,
     DB_USERNAME,
-    DB_PASSWORD
+    DB_PASSWORD,
 } as const;

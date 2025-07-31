@@ -51,7 +51,6 @@ describe("POST /auth/register", () => {
                 .post("/auth/register")
                 .send(payload);
             // Assert
-            
         });
     });
 
