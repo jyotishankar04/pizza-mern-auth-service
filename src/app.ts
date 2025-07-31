@@ -1,28 +1,28 @@
-import express, { NextFunction, Request, Response } from "express";
-import createHttpError, { HttpError } from "http-errors";
+import express, { Request, Response } from "express";
+import { HttpError } from "http-errors";
 import logger from "./config/logger";
 
 const app = express();
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
+app.use((err: HttpError, req: Request, res: Response) => {
     logger.error(err.message);
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({
-        error: [{
-            type: err.name,
-            message: err.message,
-            path: "",
-            location: ""
-        },
+        error: [
+            {
+                type: err.name,
+                message: err.message,
+                path: "",
+                location: "",
+            },
         ],
         success: false,
-        message: err.message
-    })
+        message: err.message,
+    });
 });
-
 
 export default app;
