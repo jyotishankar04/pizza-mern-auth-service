@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { User } from "../entity/User";
 import { UserData } from "../types";
 import createHttpError from "http-errors";
+import { Roles } from "../constants";
 
 export class UserService {
     private userRepository: Repository<User>;
@@ -17,6 +18,7 @@ export class UserService {
             user.lastName = lastName;
             user.email = email;
             user.password = password;
+            user.role = Roles.CUSTOMER;
             await this.userRepository.save(user);
 
             return user;
