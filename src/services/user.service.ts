@@ -18,7 +18,7 @@ export class UserService {
             user.email = email;
             user.password = password;
             await this.userRepository.save(user);
-            
+
             return user;
         } catch (error) {
             const err = createHttpError(500, "Failed to store data in DB");

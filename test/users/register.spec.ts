@@ -94,9 +94,8 @@ describe("POST /auth/register", () => {
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
             expect(users[0].id).toBe(response.body.data.id);
-        })
+        });
     });
-
 
     // Given missing fields
     describe.skip("sad path", () => {});

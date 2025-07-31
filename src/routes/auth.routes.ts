@@ -8,7 +8,7 @@ import logger from "../config/logger";
 const router = Router();
 const userRepository = AppDataSource.getRepository(User);
 const userService: UserService = new UserService(userRepository);
-const authController: AuthController = new AuthController(userService,logger);
+const authController: AuthController = new AuthController(userService, logger);
 
 router.post("/register", authController.register.bind(authController));
 
