@@ -11,12 +11,14 @@ describe("POST /auth/register", () => {
                 lastName: "Gupta",
                 email: "subhamgupta@me.com",
                 password: "password",
-            }
+            };
             // Act
-            const response = await request(app).post("/auth/register").send(payload);
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
             // Assert
             expect(response.statusCode).toBe(201);
-        })
+        });
         it("should return valid JSON response", async () => {
             // AAA
             // Arrange
@@ -25,12 +27,16 @@ describe("POST /auth/register", () => {
                 lastName: "Gupta",
                 email: "subhamgupta@me.com",
                 password: "password",
-            }
+            };
             // Act
-            const response = await request(app).post("/auth/register").send(payload);
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
             // Assert
-            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
-        })
+            expect(response.headers["content-type"]).toEqual(
+                expect.stringContaining("json"),
+            );
+        });
         it("should persist the user in DB", async () => {
             // AAA
             // Arrange
@@ -39,17 +45,15 @@ describe("POST /auth/register", () => {
                 lastName: "Gupta",
                 email: "subhamgupta@me.com",
                 password: "password",
-            }
+            };
             // Act
-            const response = await request(app).post("/auth/register").send(payload);
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
             // Assert
-            
-        })
-
-    })
-
-
+        });
+    });
 
     // Given missing fields
-    describe.skip("sad path", () => {})
-})
+    describe.skip("sad path", () => {});
+});

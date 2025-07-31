@@ -6,7 +6,6 @@ import authRoutes from "./routes/auth.routes";
 // reflect-metadata typeorm needs
 import "reflect-metadata";
 
-
 const app = express();
 
 app.get("/", (req, res) => {
@@ -14,8 +13,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
-
-
 
 app.use((err: HttpError, req: Request, res: Response) => {
     logger.error(err.message);
