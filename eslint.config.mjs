@@ -43,7 +43,7 @@ export default [
         },
         rules: {
             ...tseslint.configs.recommendedTypeChecked[0].rules,
-            "@typescript-eslint/no-unused-vars": "warn",
+            "@typescript-eslint/no-unused-vars": "off",
         },
     },
 ];

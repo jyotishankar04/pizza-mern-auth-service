@@ -77,7 +77,26 @@ describe("POST /auth/register", () => {
             expect(users[0].email).toBe(payload.email);
             expect(users[0].password).toBe(payload.password);
         });
+        it("should return registered user's id", async () => {
+            // AAA
+            // Arrange
+            const payload = {
+                firstName: "Subham",
+                lastName: "Gupta",
+                email: "subhamgupta@me.com",
+                password: "password",
+            };
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users[0].id).toBe(response.body.data.id);
+        })
     });
+
 
     // Given missing fields
     describe.skip("sad path", () => {});
