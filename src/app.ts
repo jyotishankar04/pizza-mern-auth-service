@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes";
 import "reflect-metadata";
 
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hello World!");

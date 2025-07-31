@@ -1,6 +1,25 @@
 import request from "supertest";
 import app from "../../src/app";
+import { DataSource } from "typeorm";
+import { AppDataSource } from "../../src/config/data-source";
+import { truncateTables } from "../utils";
+import { User } from "../../src/entity/User";
 describe("POST /auth/register", () => {
+    let connection : DataSource;
+
+    beforeAll(async () => {
+        connection = await AppDataSource.initialize();
+    });
+    beforeEach(async () => {
+        // Database truncate
+        truncateTables(connection);
+    })
+    afterAll(async () => {
+        // Close connection
+        await connection.destroy();
+    });
+
+    
     // Given all fields
     describe("happpy path", () => {
         it("should return 201 status code", async () => {
@@ -51,6 +70,13 @@ describe("POST /auth/register", () => {
                 .post("/auth/register")
                 .send(payload);
             // Assert
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            expect(users.length).toBe(1);
+            expect(users[0].firstName).toBe(payload.firstName);
+            expect(users[0].lastName).toBe(payload.lastName);
+            expect(users[0].email).toBe(payload.email);
+            expect(users[0].password).toBe(payload.password);
         });
     });
 

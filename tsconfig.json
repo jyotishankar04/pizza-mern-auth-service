@@ -9,6 +9,7 @@
         "skipLibCheck": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
         "lib": ["ES6"]
     },
     "include": ["src/**/*.ts"],
