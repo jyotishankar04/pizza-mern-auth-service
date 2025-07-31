@@ -17,7 +17,6 @@ export class UserService {
         return await bcrypt.hash(password, salt);
     }
     async create({ firstName, lastName, email, password }: UserData) {
-
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             const err = createHttpError(400, "Invalid email");
@@ -28,7 +27,7 @@ export class UserService {
             where: {
                 email: email.toLocaleLowerCase(),
             },
-        })
+        });
         if (existingUser) {
             const err = createHttpError(400, "Email already exist");
             throw err;
