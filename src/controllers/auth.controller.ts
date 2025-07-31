@@ -1,13 +1,20 @@
 import { Response } from "express";
-import { AppDataSource } from "../config/data-source";
-import { User } from "../entity/User";
 import { RegisterUserRequest } from "../types";
+import { UserService } from "../services/user.service";
 
 export class AuthController {
+    userService: UserService
+    constructor(userService: UserService) {
+        this.userService = userService
+    }
     async register(req: RegisterUserRequest, res: Response) {
-        const userRepository = AppDataSource.getRepository(User);
-        const { firstName, lastName, email, password } = req.body;
-        await userRepository.save({ firstName, lastName, email, password });
+
+        await this.userService.create({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: req.body.password
+        });
         return res.status(201).json({
             success: true,
             message: "User registered successfully",

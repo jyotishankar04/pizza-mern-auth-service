@@ -5,7 +5,7 @@ import { AppDataSource } from "../../src/config/data-source";
 import { truncateTables } from "../utils";
 import { User } from "../../src/entity/User";
 describe("POST /auth/register", () => {
-    let connection : DataSource;
+    let connection: DataSource;
 
     beforeAll(async () => {
         connection = await AppDataSource.initialize();
@@ -13,13 +13,12 @@ describe("POST /auth/register", () => {
     beforeEach(async () => {
         // Database truncate
         truncateTables(connection);
-    })
+    });
     afterAll(async () => {
         // Close connection
         await connection.destroy();
     });
 
-    
     // Given all fields
     describe("happpy path", () => {
         it("should return 201 status code", async () => {

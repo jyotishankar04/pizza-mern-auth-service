@@ -1,9 +1,13 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
+import { UserService } from "../services/user.service";
+import { User } from "../entity/User";
+import { AppDataSource } from "../config/data-source";
 
 const router = Router();
-
-const authController: AuthController = new AuthController();
+const userRepository = AppDataSource.getRepository(User);
+const userService: UserService = new UserService(userRepository);
+const authController: AuthController = new AuthController(userService);
 
 router.post("/register", authController.register.bind(authController));
 
