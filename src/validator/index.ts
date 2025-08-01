@@ -11,18 +11,18 @@ const getZodError = (validator: {
 };
 
 const registerUserSchema = zod.object({
-    email: zod.string({ message: "email is required" }).email({
+    email: zod.string().trim().email({
         message: "invalid email",
-    }),
-    firstName: zod.string({ message: "first name is required" }).min(3, {
+    }).nonempty({ message: "email is required" }),
+    firstName: zod.string().trim().min(3, {
         message: "first name must be at least 3 characters",
-    }),
-    lastName: zod.string({ message: "last name is required" }).min(3, {
+    }).nonempty({ message: "first name is required" }),
+    lastName: zod.string().trim().min(3, {
         message: "last name must be at least 3 characters",
-    }),
-    password: zod.string({ message: "password is required" }).min(6, {
+    }).nonempty({ message: "last name is required" }),
+    password: zod.string().trim().min(6, {
         message: "password must be at least 6 characters",
-    }),
+    }).nonempty({ message: "password is required" }),
 });
 
 export { registerUserSchema, getZodError };

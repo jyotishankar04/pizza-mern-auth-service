@@ -6,18 +6,17 @@ import { UserService } from "../services/user.service";
 import { Logger } from "winston";
 import { getZodError, registerUserSchema } from "../validator";
 import createHttpError from "http-errors";
-import { getTrimmedBody } from "../utils";
 import { _config } from "../config";
-import { AppDataSource } from "../config/data-source";
-import { RefreshToken } from "../entity/RefreshToken";
 import { TokenService } from "../services/token.service";
 import { JwtPayload } from "jsonwebtoken";
 
 export class AuthController {
     private userService: UserService;
+    private tokenService: TokenService;
     private logger: Logger;
-    constructor(userService: UserService, logger: Logger) {
+    constructor(userService: UserService, tokenService: TokenService, logger: Logger) {
         this.userService = userService;
+        this.tokenService = tokenService;
         this.logger = logger;
     }
     async register(
@@ -25,8 +24,7 @@ export class AuthController {
         res: Response,
         next: NextFunction,
     ) {
-        const trimmedBody = getTrimmedBody(req);
-        const validator = registerUserSchema.safeParse(trimmedBody);
+        const validator = registerUserSchema.safeParse(req.body);
         if (!validator.success) {
             const error = createHttpError(400, getZodError(validator));
             next(error);
@@ -56,19 +54,14 @@ export class AuthController {
                 email: user.email,
                 role: user.role,
             };
-            const tokenService = new TokenService();
-            const accessToken = await tokenService.generateAccessToken({
+            const accessToken = await this.tokenService.generateAccessToken({
                 payload,
             });
             // persist refresh token
-            const MS_IN_A_YEAR = 1000 * 60 * 60 * 24 * 365;
-            const refreshTokenRepository =
-                AppDataSource.getRepository(RefreshToken);
-            const newRefreshToken = await refreshTokenRepository.save({
-                user,
-                expiresAt: new Date(Date.now() + MS_IN_A_YEAR),
-            });
-            const refreshToken = await tokenService.generateRefreshToken({
+            const newRefreshToken = await this.tokenService.persistRefreshToken({
+                user
+            })
+            const refreshToken = await this.tokenService.generateRefreshToken({
                 refreshTokenId: String(newRefreshToken.id),
                 payload,
             });
