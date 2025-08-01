@@ -16,6 +16,9 @@ export class UserService {
         const salt = await bcrypt.genSalt(saltRounds);
         return await bcrypt.hash(password, salt);
     }
+    private async validatePassword(password: string, hash: string) {
+        return await bcrypt.compare(password, hash);
+    }
     async create({ firstName, lastName, email, password }: UserData) {
         // Check if email already exist
         const existingUser = await this.userRepository.findOne({
@@ -41,5 +44,16 @@ export class UserService {
             const err = createHttpError(500, "Failed to store data in DB");
             throw err;
         }
+    }
+    async findByEmail(email: string) {
+        const user = await this.userRepository.findOne({
+            where: {
+                email: email.toLocaleLowerCase(),
+            },
+        });
+        return user;
+    }
+    async comparePassword(password: string,passwordHash: string) {
+        return await this.validatePassword(password, passwordHash);
     }
 }

@@ -11,7 +11,7 @@
         "dev": "cross-env NODE_ENV=dev nodemon",
         "build": "tsc",
         "start": "ts-node src/index.ts",
-        "test": "jest --watch",
+        "test": "jest --runInBand --watch",
         "db:start": "docker run --rm --name pizzadb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v pgdata:/var/lib/postgresql/data  -d postgres",
         "docker:dev:build": " docker build -t auth-service:dev -f docker/dev/Dockerfile .",
           "docker:dev:run": "docker run --rm -it -v %cd%:/usr/src/app -v /usr/src/app/node_modules --env-file %cd%/.env.dev -p 5000:5000 -e CHOKIDAR_USEPOLLING=true auth-service:dev",

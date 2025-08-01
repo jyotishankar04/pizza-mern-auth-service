@@ -13,7 +13,7 @@ const getZodError = (validator: {
 const registerUserSchema = zod.object({
     email: zod
         .string()
-        .trim()
+        .trim().toLowerCase()
         .email({
             message: "invalid email",
         })
@@ -41,4 +41,21 @@ const registerUserSchema = zod.object({
         .nonempty({ message: "password is required" }),
 });
 
-export { registerUserSchema, getZodError };
+const loginSchema = zod.object({
+    email: zod
+        .string()
+        .trim()
+        .email({
+            message: "invalid email",
+        })
+        .nonempty({ message: "email is required" }),
+    password: zod
+        .string()
+        .trim()
+        .min(6, {
+            message: "password must be at least 6 characters",
+        })
+        .nonempty({ message: "password is required" }),
+});
+
+export { registerUserSchema, loginSchema, getZodError };
