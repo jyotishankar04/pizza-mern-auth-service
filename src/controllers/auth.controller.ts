@@ -14,7 +14,11 @@ export class AuthController {
     private userService: UserService;
     private tokenService: TokenService;
     private logger: Logger;
-    constructor(userService: UserService, tokenService: TokenService, logger: Logger) {
+    constructor(
+        userService: UserService,
+        tokenService: TokenService,
+        logger: Logger,
+    ) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.logger = logger;
@@ -58,9 +62,11 @@ export class AuthController {
                 payload,
             });
             // persist refresh token
-            const newRefreshToken = await this.tokenService.persistRefreshToken({
-                user
-            })
+            const newRefreshToken = await this.tokenService.persistRefreshToken(
+                {
+                    user,
+                },
+            );
             const refreshToken = await this.tokenService.generateRefreshToken({
                 refreshTokenId: String(newRefreshToken.id),
                 payload,

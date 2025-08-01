@@ -6,12 +6,12 @@ import { _config } from "../config";
 import createHttpError from "http-errors";
 import { RefreshToken } from "../entity/RefreshToken";
 import { User } from "../entity/User";
-import {  Repository } from "typeorm";
+import { Repository } from "typeorm";
 
 export class TokenService {
-    private refreshTokenRepository :Repository<RefreshToken>
+    private refreshTokenRepository: Repository<RefreshToken>;
     constructor(refreshTokenRepository: Repository<RefreshToken>) {
-        this.refreshTokenRepository = refreshTokenRepository
+        this.refreshTokenRepository = refreshTokenRepository;
     }
     async generateAccessToken({ payload }: { payload: JwtPayload }) {
         let privateKey;
@@ -44,11 +44,7 @@ export class TokenService {
         });
     }
 
-    async persistRefreshToken({
-        user 
-    }: {
-        user: User
-    }) {
+    async persistRefreshToken({ user }: { user: User }) {
         const MS_IN_A_YEAR = 1000 * 60 * 60 * 24 * 365;
 
         const newRefreshToken = await this.refreshTokenRepository.save({
