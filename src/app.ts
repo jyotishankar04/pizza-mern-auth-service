@@ -2,12 +2,14 @@ import express, { NextFunction, Request, Response } from "express";
 import createHttpError, { HttpError } from "http-errors";
 import logger from "./config/logger";
 import authRoutes from "./routes/auth.routes";
-
+import cookieParser from "cookie-parser";
 // reflect-metadata typeorm needs
 import "reflect-metadata";
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
+
 
 app.get("/", (req, res, next) => {
     return next(createHttpError(400, "Success"));

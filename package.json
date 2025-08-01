@@ -14,7 +14,7 @@
         "test": "jest --runInBand --watch",
         "db:start": "docker run --rm --name pizzadb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v pgdata:/var/lib/postgresql/data  -d postgres",
         "docker:dev:build": " docker build -t auth-service:dev -f docker/dev/Dockerfile .",
-          "docker:dev:run": "docker run --rm -it -v %cd%:/usr/src/app -v /usr/src/app/node_modules --env-file %cd%/.env.dev -p 5000:5000 -e CHOKIDAR_USEPOLLING=true auth-service:dev",
+        "docker:dev:run": "docker run --rm -it -v %cd%:/usr/src/app -v /usr/src/app/node_modules --env-file %cd%/.env.dev -p 5000:5000 -e CHOKIDAR_USEPOLLING=true auth-service:dev",
         "typeorm": "typeorm-ts-node-commonjs"
     },
     "author": "",
@@ -23,6 +23,7 @@
     "devDependencies": {
         "@eslint/js": "^9.32.0",
         "@types/bcrypt": "^6.0.0",
+        "@types/cookie-parser": "^1.4.9",
         "@types/express": "^5.0.3",
         "@types/jest": "^30.0.0",
         "@types/node": "^24.1.0",
@@ -31,6 +32,7 @@
         "eslint": "^9.32.0",
         "husky": "^9.1.7",
         "jest": "^30.0.5",
+        "mock-jwks": "^1.0.10",
         "nodemon": "^3.1.10",
         "prettier": "3.6.2",
         "ts-jest": "^29.4.0",
@@ -41,10 +43,13 @@
     "dependencies": {
         "@types/jsonwebtoken": "^9.0.10",
         "bcrypt": "^6.0.0",
+        "cookie-parser": "^1.4.7",
         "dotenv": "^17.2.1",
         "express": "^5.1.0",
+        "express-jwt": "^8.5.1",
         "http-errors": "^2.0.0",
         "jsonwebtoken": "^9.0.2",
+        "jwks-rsa": "^3.2.0",
         "pg": "^8.14.1",
         "reflect-metadata": "^0.2.2",
         "supertest": "^7.1.4",

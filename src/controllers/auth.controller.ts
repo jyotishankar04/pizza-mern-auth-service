@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { NextFunction, Response, Request } from "express";
-import { RegisterUserRequest } from "../types";
+import { AuthRequest, RegisterUserRequest } from "../types";
 import { UserService } from "../services/user.service";
 import { Logger } from "winston";
 import { getZodError, loginSchema, registerUserSchema } from "../validator";
@@ -175,5 +175,25 @@ export class AuthController {
             next(error);
             return;
         }
+    }
+    async self(req: AuthRequest, res: Response, next: NextFunction) {
+        // token data in req.user
+        const user = await this.userService.findById(Number(req.auth.sub));
+        if (!user) {
+            const error = createHttpError(401, "Invalid user");
+            next(error);
+            return;
+        }
+        return res.json({
+            success: true,
+            message: "User retrieved successfully",
+            data: {
+                id: user.id,
+                email: user.email,
+                role: user.role,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
+        });
     }
 }
