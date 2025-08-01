@@ -10,7 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.get("/", (req, res, next) => {
     return next(createHttpError(400, "Success"));
 });

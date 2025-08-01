@@ -22,9 +22,8 @@ describe("GET /auth/self", () => {
     });
     afterEach(async () => {
         jwks.stop();
-    })
+    });
     afterAll(async () => {
-
         // Close connection
         await connection.destroy();
     });
@@ -39,11 +38,15 @@ describe("GET /auth/self", () => {
                 email: "testuser@example.com",
                 password: "strong-password-123",
             });
-        })
+        });
         it("should return 200 status code", async () => {
             // AAA
             // Arrange
-            const accessToken = jwks.token({ sub: String(createdUser.id), role: createdUser.role, email: createdUser.email });
+            const accessToken = jwks.token({
+                sub: String(createdUser.id),
+                role: createdUser.role,
+                email: createdUser.email,
+            });
             // Act
             const response = await request(app)
                 .get("/auth/self")
@@ -56,7 +59,11 @@ describe("GET /auth/self", () => {
         it("should return user details in valid JSON response", async () => {
             // AAA
             // Arrange
-            const accessToken =  jwks.token({ sub: String(createdUser.id), role: createdUser.role, email: createdUser.email });
+            const accessToken = jwks.token({
+                sub: String(createdUser.id),
+                role: createdUser.role,
+                email: createdUser.email,
+            });
             // Act
             const response = await request(app)
                 .get("/auth/self")
@@ -70,5 +77,5 @@ describe("GET /auth/self", () => {
             expect(response.body.data).toHaveProperty("email");
             expect(response.body.data).toHaveProperty("role");
         });
-    })
+    });
 });

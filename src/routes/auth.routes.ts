@@ -22,6 +22,11 @@ const authController: AuthController = new AuthController(
 
 router.post("/register", authController.register.bind(authController));
 router.post("/login", authController.login.bind(authController));
-router.get("/self", authenticate ,(req:Request, res:Response, next:NextFunction) => authController.self(req as AuthRequest, res, next));
+router.get(
+    "/self",
+    authenticate,
+    (req: Request, res: Response, next: NextFunction) =>
+        authController.self(req as AuthRequest, res, next),
+);
 
 export default router;

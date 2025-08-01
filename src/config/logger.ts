@@ -14,12 +14,10 @@ const logger = winston.createLogger({
             filename: "error.log",
             dirname: "logs",
             level: "error",
-          
         }),
         new winston.transports.File({
             filename: "combined.log",
             dirname: "logs",
-           
         }),
         new winston.transports.File({
             level: "debug",
