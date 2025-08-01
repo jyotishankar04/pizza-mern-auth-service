@@ -173,14 +173,18 @@ describe("POST /auth/register", () => {
                 .post("/auth/register")
                 .send(payload);
             // Assert
-            
-            const accessToken = response.headers["set-cookie"][0].split(";")[0].split("=")[1] || "";
-            const refreshToken = response.headers["set-cookie"][1].split(";")[0].split("=")[1] || "";
+
+            const accessToken =
+                response.headers["set-cookie"][0].split(";")[0].split("=")[1] ||
+                "";
+            const refreshToken =
+                response.headers["set-cookie"][1].split(";")[0].split("=")[1] ||
+                "";
             expect(accessToken).not.toBeNull();
             expect(refreshToken).not.toBeNull();
             expect(isValidJWT(accessToken)).toBeTruthy();
             expect(isValidJWT(refreshToken)).toBeTruthy();
-        })
+        });
     });
 
     // Given missing fields
@@ -192,14 +196,14 @@ describe("POST /auth/register", () => {
                 firstName: "Subham",
                 password: "password",
                 email: "subhamgupta@me.com",
-            }
+            };
             // Act
             const response = await request(app)
                 .post("/auth/register")
                 .send(payload);
             // Assert
             expect(response.statusCode).toBe(400);
-        })
+        });
     });
 
     // /format issues
@@ -220,8 +224,8 @@ describe("POST /auth/register", () => {
             // Assert
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
-            
+
             expect(users[0].email).toBe(payload.email.trim());
-        })
-    })
+        });
+    });
 });

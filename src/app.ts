@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res, next) => {
-   return next(createHttpError(400, "Success"));
+    return next(createHttpError(400, "Success"));
 });
 
 app.use("/auth", authRoutes);

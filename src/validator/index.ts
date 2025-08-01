@@ -1,15 +1,14 @@
 import zod from "zod";
 
-const getZodError = (validator :{
+const getZodError = (validator: {
     error: {
         issues: {
             message: string;
         }[];
     };
-} ) => {
+}) => {
     return validator.error.issues[0].message;
-}
-
+};
 
 const registerUserSchema = zod.object({
     email: zod.string({ message: "email is required" }).email({

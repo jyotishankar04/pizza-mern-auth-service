@@ -1,5 +1,5 @@
 import { Request } from "express";
-export const getTrimmedBody = (req:Request) => {
+export const getTrimmedBody = (req: Request) => {
     // Object.fromEntries(
     //     Object.entries(body).map(([key, value]) => [
     //         key,

@@ -24,7 +24,7 @@ const logger = winston.createLogger({
             ),
         }),
         new winston.transports.File({
-            level:"debug",
+            level: "debug",
             dirname: "logs",
             filename: "debug.log",
             format: winston.format.combine(

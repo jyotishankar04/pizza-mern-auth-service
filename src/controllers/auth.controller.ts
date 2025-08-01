@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import fs from 'fs'
-import path from 'path'
+import fs from "fs";
+import path from "path";
 
 import { NextFunction, Response } from "express";
 import { RegisterUserRequest } from "../types";
@@ -10,8 +10,7 @@ import { getZodError, registerUserSchema } from "../validator";
 import createHttpError from "http-errors";
 import { getTrimmedBody } from "../utils";
 import { JwtPayload, sign } from "jsonwebtoken";
-import { _config } from '../config';
-
+import { _config } from "../config";
 
 export class AuthController {
     private userService: UserService;
@@ -52,32 +51,41 @@ export class AuthController {
             );
             let privateKey;
             try {
-                privateKey = fs.readFileSync(path.join(__dirname, "../../certs/private.pem"));
+                privateKey = fs.readFileSync(
+                    path.join(__dirname, "../../certs/private.pem"),
+                );
             } catch (error) {
                 const err = createHttpError(500, "Failed to read private key");
                 next(err);
-                return
+                return;
             }
             const payload: JwtPayload = {
                 sub: String(user.id),
                 email: user.email,
-                role: user.role
+                role: user.role,
             };
-            const accessToken = sign(payload, privateKey, { expiresIn: "1h", algorithm: "RS256", issuer: "auth-service" });
-            const refreshToken = sign(payload, _config.REFRESH_TOKEN_SECRET!, { expiresIn: "1y", algorithm: "HS256", issuer: "auth-service" });
+            const accessToken = sign(payload, privateKey, {
+                expiresIn: "1h",
+                algorithm: "RS256",
+                issuer: "auth-service",
+            });
+            const refreshToken = sign(payload, _config.REFRESH_TOKEN_SECRET!, {
+                expiresIn: "1y",
+                algorithm: "HS256",
+                issuer: "auth-service",
+            });
             res.cookie("accessToken", accessToken, {
                 sameSite: "strict",
                 domain: "localhost",
                 maxAge: 1000 * 60 * 60,
-                httpOnly: true //Very important 
-            })
+                httpOnly: true, //Very important
+            });
             res.cookie("refreshToken", refreshToken, {
-
                 sameSite: "strict",
                 domain: "localhost",
                 maxAge: 1000 * 60 * 60 * 24 * 365,
-                httpOnly: true //Very important
-            })
+                httpOnly: true, //Very important
+            });
             return res.status(201).json({
                 success: true,
                 message: "User registered successfully",

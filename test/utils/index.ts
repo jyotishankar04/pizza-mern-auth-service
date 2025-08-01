@@ -16,7 +16,7 @@ const isValidJWT = (token: string): boolean => {
     try {
         parts.forEach((part) => {
             Buffer.from(part, "base64").toString("utf-8");
-        })
+        });
         return true;
     } catch (error) {
         return false;
