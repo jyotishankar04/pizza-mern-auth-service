@@ -1,5 +1,5 @@
-import express, { Request, Response } from "express";
-import { HttpError } from "http-errors";
+import express, { NextFunction, Request, Response } from "express";
+import createHttpError, { HttpError } from "http-errors";
 import logger from "./config/logger";
 import authRoutes from "./routes/auth.routes";
 
@@ -9,13 +9,14 @@ import "reflect-metadata";
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
+app.get("/", (req, res, next) => {
+   return next(createHttpError(400, "Success"));
 });
 
 app.use("/auth", authRoutes);
 
-app.use((err: HttpError, req: Request, res: Response) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
     const statusCode = err.statusCode || 500;
     res.status(statusCode).json({

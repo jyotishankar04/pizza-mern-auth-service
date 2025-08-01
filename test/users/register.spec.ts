@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../../src/app";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../src/config/data-source";
-import { truncateTables } from "../utils";
+import { isValidJWT, truncateTables } from "../utils";
 import { User } from "../../src/entity/User";
 describe("POST /auth/register", () => {
     let connection: DataSource;
@@ -159,8 +159,69 @@ describe("POST /auth/register", () => {
             expect(users[0].email).toBe(payload.email);
             expect(users[0].email).toBe(payload.email.toLocaleLowerCase());
         });
+        it("should return the access token and refresh token", async () => {
+            // AAA
+            // Arrange
+            const payload = {
+                firstName: "Subham",
+                lastName: "Gupta",
+                email: "subhamgupta@me.com",
+                password: "password",
+            };
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            
+            const accessToken = response.headers["set-cookie"][0].split(";")[0].split("=")[1] || "";
+            const refreshToken = response.headers["set-cookie"][1].split(";")[0].split("=")[1] || "";
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
+            expect(isValidJWT(accessToken)).toBeTruthy();
+            expect(isValidJWT(refreshToken)).toBeTruthy();
+        })
     });
 
     // Given missing fields
-    describe.skip("sad path", () => {});
+    describe("sad path", () => {
+        it("should return 400 status code for email missing or missing fields", async () => {
+            // AAA
+            // Arrange
+            const payload = {
+                firstName: "Subham",
+                password: "password",
+                email: "subhamgupta@me.com",
+            }
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            expect(response.statusCode).toBe(400);
+        })
+    });
+
+    // /format issues
+    describe("format issues", () => {
+        it("should trim the email", async () => {
+            // AAA
+            // Arrange
+            const payload = {
+                firstName: "Subham",
+                lastName: "Gupta",
+                email: "  subhamgupta@me.com  ",
+                password: "password",
+            };
+            // Act
+            const response = await request(app)
+                .post("/auth/register")
+                .send(payload);
+            // Assert
+            const userRepository = connection.getRepository(User);
+            const users = await userRepository.find();
+            
+            expect(users[0].email).toBe(payload.email.trim());
+        })
+    })
 });

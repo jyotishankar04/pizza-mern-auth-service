@@ -23,6 +23,15 @@ const logger = winston.createLogger({
                 winston.format.json(),
             ),
         }),
+        new winston.transports.File({
+            level:"debug",
+            dirname: "logs",
+            filename: "debug.log",
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json(),
+            ),
+        }),
         new winston.transports.Console({
             level: "info",
             format: winston.format.combine(

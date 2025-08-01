@@ -17,11 +17,6 @@ export class UserService {
         return await bcrypt.hash(password, salt);
     }
     async create({ firstName, lastName, email, password }: UserData) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            const err = createHttpError(400, "Invalid email");
-            throw err;
-        }
         // Check if email already exist
         const existingUser = await this.userRepository.findOne({
             where: {
