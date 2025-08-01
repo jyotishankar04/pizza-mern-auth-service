@@ -41,13 +41,11 @@ describe("POST /auth/login", () => {
         // Test 1: Verify status code and success message
         it("should return a 200 status code", async () => {
             // Act: Perform the login request
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
-            
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
+
             // Assert
             expect(response.statusCode).toBe(200);
             expect(response.body.success).toBe(true);
@@ -56,12 +54,10 @@ describe("POST /auth/login", () => {
         // Test 2: Verify the response contains the correct user's ID
         it("should return the logged-in user's ID in the response body", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
 
             // Assert
             expect(response.body.data.id).toBeDefined();
@@ -69,12 +65,10 @@ describe("POST /auth/login", () => {
         });
         it("should return the logged-in user's email, first name, and last name ,role in the response body", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
 
             // Assert
             expect(response.body.data.email).toBeDefined();
@@ -85,27 +79,23 @@ describe("POST /auth/login", () => {
             expect(response.body.data.lastName).toBe(userData.lastName);
             expect(response.body.data.role).toBeDefined();
             expect(response.body.data.role).toBe("customer");
-        })
+        });
         it("should not return the logged-in user's password in the response body", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
 
             // Assert
             expect(response.body.data.password).toBeUndefined();
         });
         it("should not allow login with invalid credentials", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: "email@example.com",
-                    password: "invalid-password",
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: "email@example.com",
+                password: "invalid-password",
+            });
 
             // Assert
             expect(response.statusCode).toBe(401);
@@ -113,23 +103,19 @@ describe("POST /auth/login", () => {
         });
         it("should check if email and password are in format", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: "invalid-email",
-                    password: "invalid-password",
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: "invalid-email",
+                password: "invalid-password",
+            });
             // Assert
             expect(response.statusCode).toBe(400);
         });
         it("should return access and refresh token", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
             // Assert
 
             const accessToken =
@@ -145,14 +131,13 @@ describe("POST /auth/login", () => {
         });
         it("should persist the refresh token in the database", async () => {
             // Act
-            const response = await request(app)
-                .post("/auth/login")
-                .send({
-                    email: userData.email,
-                    password: userData.password,
-                });
+            const response = await request(app).post("/auth/login").send({
+                email: userData.email,
+                password: userData.password,
+            });
             // Assert
-            const refreshTokenRepository = await connection.getRepository(RefreshToken)
+            const refreshTokenRepository =
+                await connection.getRepository(RefreshToken);
             // expect(refreshTokens.length).toBe(1);
             // expect(refreshTokens[0].user.id).toBe(response.body.data.id);
             const tokens = await refreshTokenRepository
@@ -163,4 +148,4 @@ describe("POST /auth/login", () => {
                 .getMany();
         });
     });
-})
+});

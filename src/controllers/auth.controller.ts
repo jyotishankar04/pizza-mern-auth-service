@@ -96,7 +96,6 @@ export class AuthController {
         }
     }
     async login(req: Request, res: Response, next: NextFunction) {
-
         const validator = loginSchema.safeParse(req.body);
         if (!validator.success) {
             const error = createHttpError(400, getZodError(validator));
@@ -112,8 +111,8 @@ export class AuthController {
         );
         try {
             const user = await this.userService.findByEmail(
-                validator.data.email
-            )
+                validator.data.email,
+            );
             if (!user) {
                 const error = createHttpError(401, "Invalid credentials");
                 next(error);
@@ -122,7 +121,7 @@ export class AuthController {
 
             const isPasswordValid = await this.userService.comparePassword(
                 validator.data.password,
-                user.password
+                user.password,
             );
             if (!isPasswordValid) {
                 const error = createHttpError(401, "Invalid credentials");
@@ -161,12 +160,17 @@ export class AuthController {
                 httpOnly: true, //Very important
             });
 
-
             return res.status(200).json({
                 success: true,
                 message: "User logged in successfully",
-                data: { id: user.id, email: user.email, role: user.role, firstName: user.firstName, lastName: user.lastName },
-            })
+                data: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                },
+            });
         } catch (error) {
             next(error);
             return;

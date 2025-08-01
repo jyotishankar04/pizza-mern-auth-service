@@ -53,7 +53,7 @@ export class UserService {
         });
         return user;
     }
-    async comparePassword(password: string,passwordHash: string) {
+    async comparePassword(password: string, passwordHash: string) {
         return await this.validatePassword(password, passwordHash);
     }
 }

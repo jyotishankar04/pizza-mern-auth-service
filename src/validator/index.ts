@@ -13,7 +13,8 @@ const getZodError = (validator: {
 const registerUserSchema = zod.object({
     email: zod
         .string()
-        .trim().toLowerCase()
+        .trim()
+        .toLowerCase()
         .email({
             message: "invalid email",
         })
