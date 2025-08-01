@@ -6,7 +6,7 @@ import { _config } from "../config";
 import createHttpError from "http-errors";
 
 export class TokenService {
-    async generateAccessToken({ payload }:{ payload: JwtPayload}) {
+    async generateAccessToken({ payload }: { payload: JwtPayload }) {
         let privateKey;
         try {
             privateKey = fs.readFileSync(
@@ -22,8 +22,13 @@ export class TokenService {
             issuer: "auth-service",
         });
     }
-    async generateRefreshToken({ refreshTokenId ,payload}:{ refreshTokenId: string, payload: JwtPayload} ) {
-
+    async generateRefreshToken({
+        refreshTokenId,
+        payload,
+    }: {
+        refreshTokenId: string;
+        payload: JwtPayload;
+    }) {
         return sign(payload, _config.REFRESH_TOKEN_SECRET!, {
             expiresIn: "7d",
             algorithm: "HS256",

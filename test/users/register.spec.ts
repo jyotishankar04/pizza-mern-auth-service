@@ -200,11 +200,16 @@ describe("POST /auth/register", () => {
                 .post("/auth/register")
                 .send(payload);
             // Assert
-            const refreshTokenRepository = connection.getRepository(RefreshToken);
+            const refreshTokenRepository =
+                connection.getRepository(RefreshToken);
             // const refreshTokens = await refreshTokenRepository.find();
             // expect(refreshTokens.length).toBe(1);
-            const tokens = await refreshTokenRepository.createQueryBuilder("refreshToken").where("refreshToken.userId = :userId", { userId: response.body.data.id }).getMany();
-        
+            const tokens = await refreshTokenRepository
+                .createQueryBuilder("refreshToken")
+                .where("refreshToken.userId = :userId", {
+                    userId: response.body.data.id,
+                })
+                .getMany();
         });
     });
 
