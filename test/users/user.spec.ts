@@ -92,7 +92,7 @@ describe("GET /auth/self", () => {
                 .send();
             // Assert
             expect(response.body.data).not.toHaveProperty("password");
-        })
+        });
     });
     describe("sad path", () => {
         it("should return 401 status code", async () => {
@@ -102,5 +102,5 @@ describe("GET /auth/self", () => {
             // Assert
             expect(response.statusCode).toBe(401);
         });
-    })
+    });
 });

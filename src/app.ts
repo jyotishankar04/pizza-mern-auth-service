@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import  { HttpError } from "http-errors";
+import { HttpError } from "http-errors";
 import logger from "./config/logger";
 import authRoutes from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
@@ -11,13 +11,13 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-
-// for jwks endpoint 
+// for jwks endpoint
 app.get("/.well-known/jwks.json", (_, res: Response) => {
-    const files = fs.readFileSync(path.join(__dirname, '../public', '.well-known', 'jwks.json'));
+    const files = fs.readFileSync(
+        path.join(__dirname, "../public", ".well-known", "jwks.json"),
+    );
     res.json(JSON.parse(files.toString()));
 });
-
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
