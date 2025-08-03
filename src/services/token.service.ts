@@ -36,7 +36,10 @@ export class TokenService {
         refreshTokenId: string;
         payload: JwtPayload;
     }) {
-        return sign(payload, _config.REFRESH_TOKEN_SECRET!, {
+        return sign({
+            ...payload,
+            id: refreshTokenId,
+        }, _config.REFRESH_TOKEN_SECRET!, {
             expiresIn: "7d",
             algorithm: "HS256",
             issuer: "auth-service",
@@ -52,5 +55,15 @@ export class TokenService {
             expiresAt: new Date(Date.now() + MS_IN_A_YEAR),
         });
         return newRefreshToken;
+    }
+    async deleteRefreshToken(id: number) {
+        try {
+            await this.refreshTokenRepository.delete({
+                id,
+            });
+        } catch (error) {
+            const err = createHttpError(500, "Failed to delete refresh token");
+            throw err;
+        }
     }
 }

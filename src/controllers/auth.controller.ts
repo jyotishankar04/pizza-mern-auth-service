@@ -11,6 +11,7 @@ import { TokenService } from "../services/token.service";
 import { JwtPayload } from "jsonwebtoken";
 import { AppDataSource } from "../config/data-source";
 import { User } from "../entity/User";
+import { RefreshToken } from "../entity/RefreshToken";
 
 export class AuthController {
     private userService: UserService;
@@ -195,5 +196,55 @@ export class AuthController {
                 lastName: user.lastName,
             },
         });
+    }
+    async refresh(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            const payload: JwtPayload = {
+                sub: req.auth.sub,
+                email: req.auth.email,
+                role: req.auth.role,
+            };
+
+            const user = await this.userService.findById(Number(payload.sub));
+            if (!user) {
+                const error = createHttpError(400, "User with the token not found");
+                next(error);
+                return;
+            }
+
+            const accessToken = await this.tokenService.generateAccessToken({ payload });
+            const newRefreshToken = await this.tokenService.persistRefreshToken(
+                {
+                    user: user as User,
+                }
+            )
+            await this.tokenService.deleteRefreshToken(Number(req.auth.id));
+            const refreshToken = await this.tokenService.generateRefreshToken({
+                refreshTokenId: String(newRefreshToken.id),
+                payload,
+            });
+            res.cookie("accessToken", accessToken, {
+                sameSite: "strict",
+                domain: "localhost",
+                maxAge: 1000 * 60 * 60,
+                httpOnly: true, //Very important
+            });
+            res.cookie("refreshToken", refreshToken, {
+                sameSite: "strict",
+                domain: "localhost",
+                maxAge: 1000 * 60 * 60 * 24 * 365,
+                httpOnly: true, //Very important
+            });
+            return res.status(200).json({
+                success: true,
+                message: "Token refreshed successfully",
+                data: {
+                    id: user.id,
+                }
+            })
+        } catch (error) {
+            next(error);
+            return
+        }
     }
 }

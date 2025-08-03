@@ -8,6 +8,7 @@ import { TokenService } from "../services/token.service";
 import { RefreshToken } from "../entity/RefreshToken";
 import { authenticate } from "../middlewares/authenticate.middleware";
 import { AuthRequest } from "../types";
+import { validateRefreshToken } from "../middlewares/validateRefreshToken.middleware";
 
 const router = Router();
 const userRepository = AppDataSource.getRepository(User);
@@ -28,5 +29,8 @@ router.get(
     (req: Request, res: Response, next: NextFunction) =>
         authController.self(req as AuthRequest, res, next),
 );
+router.post("/refresh", validateRefreshToken,(req: Request, res: Response, next: NextFunction) =>{
+    authController.refresh(req as AuthRequest , res, next);
+});
 
 export default router;

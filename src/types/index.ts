@@ -15,5 +15,10 @@ export interface AuthRequest extends Request {
         email: string;
         role: string;
         sub: string;
+        id?: string;
     };
+}
+
+export interface IRefreshTokenPayload{
+    id: number;
 }
