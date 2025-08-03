@@ -9,9 +9,7 @@ import createHttpError from "http-errors";
 import { _config } from "../config";
 import { TokenService } from "../services/token.service";
 import { JwtPayload } from "jsonwebtoken";
-import { AppDataSource } from "../config/data-source";
 import { User } from "../entity/User";
-import { RefreshToken } from "../entity/RefreshToken";
 
 export class AuthController {
     private userService: UserService;
