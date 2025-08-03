@@ -196,7 +196,7 @@ export class AuthController {
                 lastName: user.lastName,
             },
         });
-    }
+}
     async refresh(req: AuthRequest, res: Response, next: NextFunction) {
         try {
             const payload: JwtPayload = {
@@ -246,6 +246,23 @@ export class AuthController {
                 data: {
                     id: user.id,
                 },
+            });
+        } catch (error) {
+            next(error);
+            return;
+        }
+    }
+    async logout(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            await this.tokenService.deleteRefreshToken(Number(req.auth.id));
+            this.logger.info(`Deleting refresh token with id: ${req.auth.id}`);
+            this.logger.info(`User logged out successfully with id: ${req.auth.id}`);
+
+            res.clearCookie("accessToken");
+            res.clearCookie("refreshToken");
+            return res.status(200).json({
+                success: true,
+                message: "User logged out successfully",
             });
         } catch (error) {
             next(error);

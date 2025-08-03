@@ -9,6 +9,7 @@ import { RefreshToken } from "../entity/RefreshToken";
 import { authenticate } from "../middlewares/authenticate.middleware";
 import { AuthRequest } from "../types";
 import { validateRefreshToken } from "../middlewares/validateRefreshToken.middleware";
+import { parseRefreshToken } from "../middlewares/parseRefreshToken";
 
 const router = Router();
 const userRepository = AppDataSource.getRepository(User);
@@ -35,6 +36,13 @@ router.post(
     (req: Request, res: Response, next: NextFunction) => {
         authController.refresh(req as AuthRequest, res, next);
     },
+);
+
+router.post(
+    "/logout",
+    authenticate,parseRefreshToken,
+    (req: Request, res: Response, next: NextFunction) =>
+        authController.logout(req as AuthRequest, res, next),
 );
 
 export default router;
