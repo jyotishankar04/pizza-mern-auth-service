@@ -228,6 +228,7 @@ describe("POST /auth/register", () => {
                 .post("/auth/register")
                 .send(payload);
             // Assert
+            // Assert
             expect(response.statusCode).toBe(400);
         });
     });

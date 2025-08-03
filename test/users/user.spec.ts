@@ -77,5 +77,30 @@ describe("GET /auth/self", () => {
             expect(response.body.data).toHaveProperty("email");
             expect(response.body.data).toHaveProperty("role");
         });
+        it("should not return user password in valid JSON response", async () => {
+            // AAA
+            // Arrange
+            const accessToken = jwks.token({
+                sub: String(createdUser.id),
+                role: createdUser.role,
+                email: createdUser.email,
+            });
+            // Act
+            const response = await request(app)
+                .get("/auth/self")
+                .set("Cookie", [`accessToken=${accessToken}`])
+                .send();
+            // Assert
+            expect(response.body.data).not.toHaveProperty("password");
+        })
     });
+    describe("sad path", () => {
+        it("should return 401 status code", async () => {
+            // AAA
+            // Act
+            const response = await request(app).get("/auth/self").send();
+            // Assert
+            expect(response.statusCode).toBe(401);
+        });
+    })
 });
