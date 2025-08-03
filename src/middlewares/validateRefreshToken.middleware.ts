@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { expressjwt } from "express-jwt";
 import { Request } from "express";
 import { _config } from "../config";
@@ -19,21 +18,27 @@ export const validateRefreshToken = expressjwt({
     async isRevoked(req: Request, token) {
         {
             try {
-                const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
+                const refreshTokenRepository =
+                    AppDataSource.getRepository(RefreshToken);
 
                 const refreshTokens = await refreshTokenRepository.findOne({
                     where: {
-                         id: Number((token?.payload as IRefreshTokenPayload).id),
+                        id: Number((token?.payload as IRefreshTokenPayload).id),
                         user: {
-                            id: Number((token?.payload.sub))
-                        }
+                            id: Number(token?.payload.sub),
+                        },
                     },
                 });
                 return refreshTokens === null;
             } catch (err) {
-                logger.error("Error validating refresh token: " + err + " " + (token?.payload as IRefreshTokenPayload).id);
+                logger.error(
+                    "Error validating refresh token: " +
+                        err +
+                        " " +
+                        (token?.payload as IRefreshTokenPayload).id,
+                );
                 return true;
             }
         }
-    }
+    },
 });

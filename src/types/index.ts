@@ -19,6 +19,6 @@ export interface AuthRequest extends Request {
     };
 }
 
-export interface IRefreshTokenPayload{
+export interface IRefreshTokenPayload {
     id: number;
 }

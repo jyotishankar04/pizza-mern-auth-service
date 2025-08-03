@@ -207,17 +207,22 @@ export class AuthController {
 
             const user = await this.userService.findById(Number(payload.sub));
             if (!user) {
-                const error = createHttpError(400, "User with the token not found");
+                const error = createHttpError(
+                    400,
+                    "User with the token not found",
+                );
                 next(error);
                 return;
             }
 
-            const accessToken = await this.tokenService.generateAccessToken({ payload });
+            const accessToken = await this.tokenService.generateAccessToken({
+                payload,
+            });
             const newRefreshToken = await this.tokenService.persistRefreshToken(
                 {
                     user: user as User,
-                }
-            )
+                },
+            );
             await this.tokenService.deleteRefreshToken(Number(req.auth.id));
             const refreshToken = await this.tokenService.generateRefreshToken({
                 refreshTokenId: String(newRefreshToken.id),
@@ -240,11 +245,11 @@ export class AuthController {
                 message: "Token refreshed successfully",
                 data: {
                     id: user.id,
-                }
-            })
+                },
+            });
         } catch (error) {
             next(error);
-            return
+            return;
         }
     }
 }

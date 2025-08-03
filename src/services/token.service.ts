@@ -36,15 +36,19 @@ export class TokenService {
         refreshTokenId: string;
         payload: JwtPayload;
     }) {
-        return sign({
-            ...payload,
-            id: refreshTokenId,
-        }, _config.REFRESH_TOKEN_SECRET!, {
-            expiresIn: "7d",
-            algorithm: "HS256",
-            issuer: "auth-service",
-            jwtid: refreshTokenId,
-        });
+        return sign(
+            {
+                ...payload,
+                id: refreshTokenId,
+            },
+            _config.REFRESH_TOKEN_SECRET!,
+            {
+                expiresIn: "7d",
+                algorithm: "HS256",
+                issuer: "auth-service",
+                jwtid: refreshTokenId,
+            },
+        );
     }
 
     async persistRefreshToken({ user }: { user: User }) {
