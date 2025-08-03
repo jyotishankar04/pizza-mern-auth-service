@@ -196,7 +196,7 @@ export class AuthController {
                 lastName: user.lastName,
             },
         });
-}
+    }
     async refresh(req: AuthRequest, res: Response, next: NextFunction) {
         try {
             const payload: JwtPayload = {
@@ -256,7 +256,9 @@ export class AuthController {
         try {
             await this.tokenService.deleteRefreshToken(Number(req.auth.id));
             this.logger.info(`Deleting refresh token with id: ${req.auth.id}`);
-            this.logger.info(`User logged out successfully with id: ${req.auth.id}`);
+            this.logger.info(
+                `User logged out successfully with id: ${req.auth.id}`,
+            );
 
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
