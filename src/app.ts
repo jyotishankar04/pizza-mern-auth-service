@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { HttpError } from "http-errors";
 import logger from "./config/logger";
 import authRoutes from "./routes/auth.routes";
+import tanentRoutes from "./routes/tanent.routes";
 import cookieParser from "cookie-parser";
 // reflect-metadata typeorm needs
 import "reflect-metadata";
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
-
+app.use("/tanents", tanentRoutes)
 // eslint-disable-next-line no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
