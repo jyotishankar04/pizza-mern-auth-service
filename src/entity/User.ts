@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Tanent } from "./Tanent";
 
 @Entity({
     name: "users",
@@ -21,4 +22,7 @@ export class User {
 
     @Column()
     role: string;
+
+    @ManyToOne(() => Tanent)
+    tanent: Tanent;
 }
