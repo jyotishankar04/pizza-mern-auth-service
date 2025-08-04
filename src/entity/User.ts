@@ -1,10 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
-    name: "users"
+    name: "users",
 })
 export class User {
-
     @PrimaryGeneratedColumn()
     id: number;
 
