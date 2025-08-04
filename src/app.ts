@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
-app.use("/tanents", tanentRoutes)
+app.use("/tanents", tanentRoutes);
 // eslint-disable-next-line no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);

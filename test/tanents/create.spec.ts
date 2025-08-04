@@ -29,15 +29,14 @@ describe("POST /tanents", () => {
             const tanentData = {
                 name: "Test Tanent",
                 address: " 123 Main St, Anytown, USA",
-            }
-            const response =await request(app).post("/tanents").send({
+            };
+            const response = await request(app).post("/tanents").send({
                 name: tanentData.name,
                 address: tanentData.address,
-            })
+            });
 
             // Assert
             expect(response.statusCode).toBe(201);
-            
         });
     });
 });
