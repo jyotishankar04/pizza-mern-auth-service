@@ -5,6 +5,8 @@ import { Tanent } from "../entity/Tanent";
 import { AppDataSource } from "../config/data-source";
 import logger from "../config/logger";
 import { authenticate } from "../middlewares/authenticate.middleware";
+import { canAccess } from "../middlewares/canAccess.middleware";
+import { Roles } from "../constants";
 
 const router = express.Router();
 
@@ -14,6 +16,7 @@ const tanentController = new TanentController(tanentService, logger);
 router.post(
     "/",
     authenticate,
+    canAccess([Roles.ADMIN]),
     (req: Request, res: Response, next: NextFunction) =>
         tanentController.create(req, res, next),
 );
