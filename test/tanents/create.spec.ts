@@ -75,13 +75,13 @@ describe("POST /tanents", () => {
         it("should return 403 if user is not admin", async () => {
             // Arrange
             const tanentData = {
-                name: "Test Tanent",
-                address: " 123 Main St, Anytown, USA",
-            },
-            managerToken = jwks.token({
-                sub: "1",
-                role: Roles.MANAGER,
-            })     
+                    name: "Test Tanent",
+                    address: " 123 Main St, Anytown, USA",
+                },
+                managerToken = jwks.token({
+                    sub: "1",
+                    role: Roles.MANAGER,
+                });
             // Act
             const response = await request(app)
                 .post("/tanents")
@@ -95,7 +95,7 @@ describe("POST /tanents", () => {
             const tanentRepository = connection.getRepository(Tanent);
             const tanents = await tanentRepository.find();
             expect(tanents).toHaveLength(0);
-        })
+        });
         it("should create a new tanent in the database", async () => {
             // AAA
             // Arrange
