@@ -77,4 +77,4 @@ const createTanentSchema = zod.object({
         .nonempty({ message: "address is required" }),
 });
 
-export { registerUserSchema, loginSchema,createTanentSchema, getZodError };
+export { registerUserSchema, loginSchema, createTanentSchema, getZodError };

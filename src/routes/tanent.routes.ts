@@ -11,9 +11,11 @@ const router = express.Router();
 const tanentRepository = AppDataSource.getRepository(Tanent);
 const tanentService = new TanentService(tanentRepository, logger);
 const tanentController = new TanentController(tanentService, logger);
-router.post("/", authenticate, (req: Request, res: Response, next: NextFunction) => tanentController.create(req, res, next));
-
-
-
+router.post(
+    "/",
+    authenticate,
+    (req: Request, res: Response, next: NextFunction) =>
+        tanentController.create(req, res, next),
+);
 
 export default router;

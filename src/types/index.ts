@@ -23,7 +23,6 @@ export interface IRefreshTokenPayload {
     id: number;
 }
 
-
 // Tanents
 
 export interface ITanentData {

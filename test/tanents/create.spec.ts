@@ -24,13 +24,13 @@ describe("POST /tanents", () => {
         adminToken = jwks.token({
             sub: "1",
             role: Roles.ADMIN,
-        })
+        });
         // Wipes the database clean before each test run
         await connection.synchronize(true);
     });
     afterEach(async () => {
         jwks.stop();
-    })
+    });
     afterAll(async () => {
         await connection.destroy();
     });
@@ -42,10 +42,13 @@ describe("POST /tanents", () => {
                 name: "Test Tanent",
                 address: " 123 Main St, Anytown, USA",
             };
-            const response = await request(app).post("/tanents").set("Cookie", [`accessToken=${adminToken}`]).send({
-                name: tanentData.name,
-                address: tanentData.address,
-            });
+            const response = await request(app)
+                .post("/tanents")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send({
+                    name: tanentData.name,
+                    address: tanentData.address,
+                });
 
             // Assert
             // AAA
@@ -68,7 +71,7 @@ describe("POST /tanents", () => {
             const tanentRepository = connection.getRepository(Tanent);
             const tanents = await tanentRepository.find();
             expect(tanents).toHaveLength(0);
-        })
+        });
         it("should create a new tanent in the database", async () => {
             // AAA
             // Arrange
@@ -77,17 +80,20 @@ describe("POST /tanents", () => {
                 address: "0123 Main St, Anytown, USA",
             };
             // Act
-            const response = await request(app).post("/tanents").set("Cookie", [`accessToken=${adminToken}`]).send({
-                name: tanentData.name,
-                address: tanentData.address,
-            });
+            const response = await request(app)
+                .post("/tanents")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send({
+                    name: tanentData.name,
+                    address: tanentData.address,
+                });
             // Assert
             const tanentRepository = connection.getRepository(Tanent);
             const tanents = await tanentRepository.find();
             expect(tanents).toHaveLength(1);
             expect(tanents[0].name).toBe(tanentData.name);
             expect(tanents[0].address).toBe(tanentData.address);
-        })
+        });
         it("should return the created tanent's id in the response body", async () => {
             // AAA
             // Arrange
@@ -96,12 +102,15 @@ describe("POST /tanents", () => {
                 address: "0123 Main St, Anytown, USA",
             };
             // Act
-            const response = await request(app).post("/tanents").set("Cookie", [`accessToken=${adminToken}`]).send({
-                name: tanentData.name,
-                address: tanentData.address,
-            });
+            const response = await request(app)
+                .post("/tanents")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send({
+                    name: tanentData.name,
+                    address: tanentData.address,
+                });
             // Assert
             expect(response.body.data.id).toBeDefined();
-        })
+        });
     });
 });
