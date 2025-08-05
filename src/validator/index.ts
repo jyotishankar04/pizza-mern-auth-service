@@ -59,4 +59,22 @@ const loginSchema = zod.object({
         .nonempty({ message: "password is required" }),
 });
 
-export { registerUserSchema, loginSchema, getZodError };
+// Tanents
+const createTanentSchema = zod.object({
+    name: zod
+        .string()
+        .trim()
+        .min(3, {
+            message: "name must be at least 3 characters",
+        })
+        .nonempty({ message: "name is required" }),
+    address: zod
+        .string()
+        .trim()
+        .min(3, {
+            message: "address must be at least 3 characters",
+        })
+        .nonempty({ message: "address is required" }),
+});
+
+export { registerUserSchema, loginSchema,createTanentSchema, getZodError };

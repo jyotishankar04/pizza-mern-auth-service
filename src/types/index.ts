@@ -22,3 +22,11 @@ export interface AuthRequest extends Request {
 export interface IRefreshTokenPayload {
     id: number;
 }
+
+
+// Tanents
+
+export interface ITanentData {
+    name: string;
+    address: string;
+}
