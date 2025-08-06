@@ -137,4 +137,42 @@ describe("POST /tanents", () => {
             expect(response.body.data.id).toBeDefined();
         });
     });
+    describe("sad path", () => {
+        it("should return 400 if tanent name is missing", async () => {
+            // AAA
+            // Arrange
+            const tanentData = {
+                name: "",
+                address: "0123 Main St, Anytown, USA",
+            };
+            // Act
+            const response = await request(app)
+                .post("/tanents")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send({
+                    name: tanentData.name,
+                    address: tanentData.address,
+                });
+            // Assert
+            expect(response.statusCode).toBe(400);
+        });
+        it("should return 400 if tanent address is missing", async () => {
+            // AAA
+            // Arrange
+            const tanentData = {
+                name: "Test Tanent",
+                address: "",
+            };
+            // Act
+            const response = await request(app)
+                .post("/tanents")
+                .set("Cookie", [`accessToken=${adminToken}`])
+                .send({
+                    name: tanentData.name,
+                    address: tanentData.address,
+                });
+            // Assert
+            expect(response.statusCode).toBe(400);
+        })
+    })
 });

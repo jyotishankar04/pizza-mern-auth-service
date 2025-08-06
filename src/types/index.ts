@@ -5,6 +5,8 @@ export interface UserData {
     lastName: string;
     email: string;
     password: string;
+    role?: string;
+    tanentId?: string | number;
 }
 export interface RegisterUserRequest extends Request {
     body: UserData;
@@ -28,4 +30,25 @@ export interface IRefreshTokenPayload {
 export interface ITanentData {
     name: string;
     address: string;
+}
+
+export interface TenantQueryParams {
+    q: string;
+    perPage: number;
+    currentPage: number;
+}
+
+export enum TRoles {
+    "customer",
+    "manager",
+    "admin",
+}
+
+
+// Users
+export interface IUserQueryParams {
+    q: string;
+    perPage: number;
+    currentPage: number;
+    role: "customer" | "manager" | "admin";    
 }

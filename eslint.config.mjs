@@ -26,13 +26,16 @@ export default [
                 __filename: "readonly",
             },
         },
+        rules: {
+            "no-unused-vars": "warn", // Basic JS unused vars
+        },
     },
 
     // TypeScript rules applied only to .ts files
     {
         files: ["src/**/*.ts"],
         languageOptions: {
-            parser, // ✅ This fixes the "Unexpected token" issue
+            parser,
             parserOptions: {
                 project: "./tsconfig.json",
                 tsconfigRootDir: __dirname,
@@ -43,7 +46,16 @@ export default [
         },
         rules: {
             ...tseslint.configs.recommendedTypeChecked[0].rules,
-            "@typescript-eslint/no-unused-vars": "off",
+            "no-unused-vars": "off", // Disable base rule
+            "@typescript-eslint/no-unused-vars": [
+                "warn", // or "error"
+                {
+                    argsIgnorePattern: "^_",
+                    varsIgnorePattern: "^_",
+                    caughtErrorsIgnorePattern: "^_",
+                },
+            ],
+            // Other TypeScript specific rules
         },
     },
 ];

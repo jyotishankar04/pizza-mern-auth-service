@@ -20,5 +20,8 @@ router.post(
     (req: Request, res: Response, next: NextFunction) =>
         tanentController.create(req, res, next),
 );
-
+router.get("/", authenticate, canAccess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => tanentController.getAll(req, res, next));
+router.get("/:id", authenticate, canAccess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => tanentController.getById(req, res, next));
+router.patch("/:id", authenticate, canAccess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => tanentController.update(req, res, next));
+router.delete("/:id", authenticate, canAccess([Roles.ADMIN]), (req: Request, res: Response, next: NextFunction) => tanentController.delete(req, res, next));
 export default router;

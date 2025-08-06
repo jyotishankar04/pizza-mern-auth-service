@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { JwtPayload, sign } from "jsonwebtoken";
 import fs from "fs";
 import path from "path";
@@ -19,8 +18,8 @@ export class TokenService {
             privateKey = fs.readFileSync(
                 path.join(__dirname, "../../certs/private.pem"),
             );
-        } catch (error) {
-            const err = createHttpError(500, "Failed to read private key");
+        } catch (error: any) {
+            const err = createHttpError(error.statusCode || 500, error.message || "Failed to read private key");
             throw err;
         }
         return sign(payload, privateKey, {
@@ -70,4 +69,5 @@ export class TokenService {
             throw err;
         }
     }
+    
 }

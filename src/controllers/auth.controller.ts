@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 
 import { NextFunction, Response, Request } from "express";
 import { AuthRequest, RegisterUserRequest } from "../types";
@@ -6,7 +5,6 @@ import { UserService } from "../services/user.service";
 import { Logger } from "winston";
 import { getZodError, loginSchema, registerUserSchema } from "../validator";
 import createHttpError from "http-errors";
-import { _config } from "../config";
 import { TokenService } from "../services/token.service";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../entity/User";
