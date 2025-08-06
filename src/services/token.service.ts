@@ -67,8 +67,11 @@ export class TokenService {
             await this.refreshTokenRepository.delete({
                 id,
             });
-        } catch (error:any) {
-            const err = createHttpError( error.statusCode || 500, error.message || "Failed to delete refresh token");
+        } catch (error: any) {
+            const err = createHttpError(
+                error.statusCode || 500,
+                error.message || "Failed to delete refresh token",
+            );
             throw err;
         }
     }

@@ -81,7 +81,10 @@ export class UserService {
             await this.userRepository.save(user);
             return user;
         } catch (error: any) {
-           const err = createHttpError(error.statusCode || 500, error.message || "Failed to create user");
+            const err = createHttpError(
+                error.statusCode || 500,
+                error.message || "Failed to create user",
+            );
             throw err;
         }
     }
@@ -186,8 +189,11 @@ export class UserService {
         }
         try {
             await this.userRepository.remove(user);
-        } catch (error:any) {
-            const err = createHttpError( error.statusCode || 500, error?.message || "Failed to delete user");
+        } catch (error: any) {
+            const err = createHttpError(
+                error.statusCode || 500,
+                error?.message || "Failed to delete user",
+            );
             throw err;
         }
     }
