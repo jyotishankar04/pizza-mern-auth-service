@@ -13,11 +13,16 @@ export class TokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
     async generateAccessToken({ payload }: { payload: JwtPayload }) {
-        let privateKey;
+        let privateKey:string;
+        if(!_config.PRIVATE_KEY){
+            const error = createHttpError(
+                500,
+                "SECRET KEY IS NOT SET",
+            )
+            throw error
+        }
         try {
-            privateKey = fs.readFileSync(
-                path.join(__dirname, "../../certs/private.pem"),
-            );
+            privateKey = _config.PRIVATE_KEY!;
         } catch (error: any) {
             const err = createHttpError(
                 error.statusCode || 500,
