@@ -13,13 +13,10 @@ export class TokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
     async generateAccessToken({ payload }: { payload: JwtPayload }) {
-        let privateKey:string;
-        if(!_config.PRIVATE_KEY){
-            const error = createHttpError(
-                500,
-                "SECRET KEY IS NOT SET",
-            )
-            throw error
+        let privateKey: string;
+        if (!_config.PRIVATE_KEY) {
+            const error = createHttpError(500, "SECRET KEY IS NOT SET");
+            throw error;
         }
         try {
             privateKey = _config.PRIVATE_KEY!;
