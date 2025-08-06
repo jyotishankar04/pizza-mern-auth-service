@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { TanentService } from "../services/tanent.service";
 import { Logger } from "winston";
-import { createTanentSchema, getZodError, tanentQueryValidator, updateTanentSchema } from "../validator";
+import {
+    createTanentSchema,
+    getZodError,
+    tanentQueryValidator,
+    updateTanentSchema,
+} from "../validator";
 import createHttpError from "http-errors";
 
 export class TanentController {
@@ -17,7 +22,7 @@ export class TanentController {
             name,
             address,
         });
-        if(!validator.success) {
+        if (!validator.success) {
             const error = createHttpError(400, getZodError(validator));
             return next(error);
         }
@@ -44,7 +49,7 @@ export class TanentController {
     async getAll(req: Request, res: Response, next: NextFunction) {
         this.logger.info(`Getting all tanents`);
         const validator = await tanentQueryValidator.safeParseAsync(req.query);
-        if(!validator.success) {
+        if (!validator.success) {
             const error = createHttpError(400, getZodError(validator));
             return next(error);
         }
@@ -58,7 +63,7 @@ export class TanentController {
                 success: true,
                 message: "Tanents retrieved successfully",
                 data: {
-                    tanents:tanents.data,
+                    tanents: tanents.data,
                     total: tanents.count,
                 },
             });
@@ -69,13 +74,15 @@ export class TanentController {
     }
 
     async getById(req: Request, res: Response, next: NextFunction) {
-        if(!req.params.id) {
+        if (!req.params.id) {
             const error = createHttpError(400, "Tanent id is required");
             return next(error);
         }
         this.logger.info(`Getting tanent with id: ${req.params.id}`);
         try {
-            const tanent = await this.tanentService.findById(Number(req.params.id));
+            const tanent = await this.tanentService.findById(
+                Number(req.params.id),
+            );
             if (!tanent) {
                 const error = createHttpError(404, "Tanent not exists");
                 return next(error);
@@ -95,17 +102,20 @@ export class TanentController {
         }
     }
     async update(req: Request, res: Response, next: NextFunction) {
-        if(!req.params.id) {
+        if (!req.params.id) {
             const error = createHttpError(400, "Tanent id is required");
             return next(error);
         }
         this.logger.info(`Updating tanent with id: ${req.params.id}`);
         const validator = await updateTanentSchema.safeParseAsync(req.body);
         try {
-            const tanent = await this.tanentService.update(Number(req.params.id),{
-                name: validator?.data?.name!,
-                address: validator?.data?.address!,
-            });
+            const tanent = await this.tanentService.update(
+                Number(req.params.id),
+                {
+                    name: validator?.data?.name!,
+                    address: validator?.data?.address!,
+                },
+            );
             return res.status(200).json({
                 success: true,
                 message: "Tanent updated successfully",
@@ -121,7 +131,7 @@ export class TanentController {
         }
     }
     async delete(req: Request, res: Response, next: NextFunction) {
-        if(!req.params.id) {
+        if (!req.params.id) {
             const error = createHttpError(400, "Tanent id is required");
             return next(error);
         }
@@ -137,5 +147,4 @@ export class TanentController {
             return next(error);
         }
     }
-    
 }

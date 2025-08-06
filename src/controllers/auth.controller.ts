@@ -1,4 +1,3 @@
-
 import { NextFunction, Response, Request } from "express";
 import { AuthRequest, RegisterUserRequest } from "../types";
 import { UserService } from "../services/user.service";

@@ -1,24 +1,29 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { createUserSchema, getZodError, updateUserSchema, usersQueryValidator } from "../validator";
+import {
+    createUserSchema,
+    getZodError,
+    updateUserSchema,
+    usersQueryValidator,
+} from "../validator";
 import createHttpError, { HttpError } from "http-errors";
 import { Logger } from "winston";
 
 export class UserController {
-    private userService: UserService
-    private logger: Logger
+    private userService: UserService;
+    private logger: Logger;
     constructor(userService: UserService, logger: Logger) {
-        this.userService = userService
+        this.userService = userService;
         this.logger = logger;
     }
     async create(req: Request, res: Response, next: NextFunction) {
-        const validateUser = await createUserSchema.safeParseAsync(req.body)
+        const validateUser = await createUserSchema.safeParseAsync(req.body);
         if (!validateUser.success) {
             return res.status(400).json({
                 success: false,
-                message: getZodError(validateUser)
-            })
+                message: getZodError(validateUser),
+            });
         }
         try {
             const user = await this.userService.create({
@@ -27,36 +32,41 @@ export class UserController {
                 lastName: validateUser?.data?.lastName!,
                 password: validateUser?.data?.password!,
                 role: validateUser?.data?.role,
-                tanentId: String(validateUser?.data?.tanentId!)
-            })
+                tanentId: String(validateUser?.data?.tanentId!),
+            });
             return res.status(201).json({
                 success: true,
                 message: "User created successfully",
                 data: {
-                    id: user.id
-                }
-            })
-
+                    id: user.id,
+                },
+            });
         } catch (error: HttpError | any) {
-            const err = createHttpError((error?.status || error.statusCode) || 500, error?.message);
+            const err = createHttpError(
+                error?.status || error.statusCode || 500,
+                error?.message,
+            );
             return next(err);
         }
     }
     async getAll(req: Request, res: Response, next: NextFunction) {
-        const validatedQuery = await usersQueryValidator.safeParseAsync(req.query);
+        const validatedQuery = await usersQueryValidator.safeParseAsync(
+            req.query,
+        );
         if (!validatedQuery.success) {
             const error = createHttpError(400, getZodError(validatedQuery));
             return next(error);
         }
         try {
-            const { users, count } = await this.userService.getAll(
-                {
-                    currentPage: validatedQuery?.data?.currentPage!,
-                    perPage: validatedQuery?.data?.perPage!,
-                    q: validatedQuery?.data?.q!,
-                    role: validatedQuery?.data?.role as "customer" | "manager" | "admin",
-                }
-            );
+            const { users, count } = await this.userService.getAll({
+                currentPage: validatedQuery?.data?.currentPage!,
+                perPage: validatedQuery?.data?.perPage!,
+                q: validatedQuery?.data?.q!,
+                role: validatedQuery?.data?.role as
+                    | "customer"
+                    | "manager"
+                    | "admin",
+            });
 
             this.logger.info("All users have been fetched");
             res.json({
@@ -89,7 +99,7 @@ export class UserController {
                     firstName: user?.firstName,
                     lastName: user?.lastName,
                 },
-            })
+            });
         } catch (err: HttpError | any) {
             const error = createHttpError(err.statusCode || 500, err.message);
             return next(error);
@@ -100,14 +110,14 @@ export class UserController {
         if (!validator.success) {
             return res.status(400).json({
                 success: false,
-                message: getZodError(validator)
+                message: getZodError(validator),
             });
         }
 
         try {
             const updatedUser = await this.userService.update({
                 id: Number(req.params.id),
-                data: validator.data
+                data: validator.data,
             });
 
             return res.status(200).json({
@@ -117,8 +127,8 @@ export class UserController {
                     email: updatedUser.email,
                     role: updatedUser.role,
                     firstName: updatedUser.firstName,
-                    lastName: updatedUser.lastName
-                }
+                    lastName: updatedUser.lastName,
+                },
             });
         } catch (err: HttpError | any) {
             const error = createHttpError(err.statusCode || 500, err.message);
@@ -126,11 +136,11 @@ export class UserController {
         }
     }
     async delete(req: Request, res: Response, next: NextFunction) {
-    try {
+        try {
             await this.userService.delete(Number(req.params.id));
             return res.status(200).json({
                 success: true,
-                message: "User deleted successfully"
+                message: "User deleted successfully",
             });
         } catch (err: HttpError | any) {
             const error = createHttpError(err.statusCode || 500, err.message);

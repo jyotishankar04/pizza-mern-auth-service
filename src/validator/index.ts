@@ -84,15 +84,17 @@ const updateTanentSchema = zod.object({
         .min(3, {
             message: "name must be at least 3 characters",
         })
-        .nonempty({ message: "tanent name is required" }).optional(),
+        .nonempty({ message: "tanent name is required" })
+        .optional(),
     address: zod
         .string()
         .trim()
         .min(3, {
             message: "address must be at least 3 characters",
         })
-        .nonempty({ message: "tanent address is required" }).optional(),
-})
+        .nonempty({ message: "tanent address is required" })
+        .optional(),
+});
 const tanentQueryValidator = zod.object({
     q: zod
         .string()
@@ -149,62 +151,74 @@ const createUserSchema = zod.object({
         })
         .nonempty({ message: "password is required" }),
     role: zod.enum(["customer", "manager", "admin"]).default("customer"),
-    tanentId: zod.number().or(zod.string().refine((val) => !isNaN(parseInt(val, 10)), {
-        message: "tanentId must be a number or a string that can be parsed to a number"
-    })),
-})
-const updateUserSchema = zod.object({
-    email: zod
-        .string()
-        .trim()
-        .toLowerCase()
-        .email({
-            message: "Invalid email format",
-        })
-        .optional()
-        .transform(val => val === "" ? undefined : val), // Handle empty strings
-    firstName: zod
-        .string()
-        .trim()
-        .min(3, {
-            message: "First name must be at least 3 characters",
-        })
-        .optional()
-        .transform(val => val === "" ? undefined : val),
-    lastName: zod
-        .string()
-        .trim()
-        .min(3, {
-            message: "Last name must be at least 3 characters",
-        })
-        .optional()
-        .transform(val => val === "" ? undefined : val),
-    role: zod.enum(["customer", "manager", "admin", ""])
-        .optional()
-        .transform(val => val === "" ? undefined : val),
-    tanentId: zod.union([
-        zod.number().int().positive({
-            message: "tanentId must be a positive integer"
+    tanentId: zod.number().or(
+        zod.string().refine((val) => !isNaN(parseInt(val, 10)), {
+            message:
+                "tanentId must be a number or a string that can be parsed to a number",
         }),
-        zod.string()
-            .transform(val => parseInt(val, 10))
-            .refine(val => !isNaN(val), {
-                message: "tanentId must be a number or numeric string"
-            })
-            .refine(val => val > 0, {
-                message: "tanentId must be positive"
-            })
-    ])
-        .optional()
-        .transform(val => typeof val === "string" && val === "" ? undefined : val)
-}).refine(data => {
-    // Ensure at least one field is provided for update
-    return Object.values(data).some(val => val !== undefined);
-}, {
-    message: "At least one field must be provided for update",
-    path: ["root"]
+    ),
 });
-
+const updateUserSchema = zod
+    .object({
+        email: zod
+            .string()
+            .trim()
+            .toLowerCase()
+            .email({
+                message: "Invalid email format",
+            })
+            .optional()
+            .transform((val) => (val === "" ? undefined : val)), // Handle empty strings
+        firstName: zod
+            .string()
+            .trim()
+            .min(3, {
+                message: "First name must be at least 3 characters",
+            })
+            .optional()
+            .transform((val) => (val === "" ? undefined : val)),
+        lastName: zod
+            .string()
+            .trim()
+            .min(3, {
+                message: "Last name must be at least 3 characters",
+            })
+            .optional()
+            .transform((val) => (val === "" ? undefined : val)),
+        role: zod
+            .enum(["customer", "manager", "admin", ""])
+            .optional()
+            .transform((val) => (val === "" ? undefined : val)),
+        tanentId: zod
+            .union([
+                zod.number().int().positive({
+                    message: "tanentId must be a positive integer",
+                }),
+                zod
+                    .string()
+                    .transform((val) => parseInt(val, 10))
+                    .refine((val) => !isNaN(val), {
+                        message: "tanentId must be a number or numeric string",
+                    })
+                    .refine((val) => val > 0, {
+                        message: "tanentId must be positive",
+                    }),
+            ])
+            .optional()
+            .transform((val) =>
+                typeof val === "string" && val === "" ? undefined : val,
+            ),
+    })
+    .refine(
+        (data) => {
+            // Ensure at least one field is provided for update
+            return Object.values(data).some((val) => val !== undefined);
+        },
+        {
+            message: "At least one field must be provided for update",
+            path: ["root"],
+        },
+    );
 
 const usersQueryValidator = zod.object({
     q: zod
@@ -233,10 +247,16 @@ const usersQueryValidator = zod.object({
             const num = Number(val);
             return isNaN(num) ? 6 : num;
         }),
-       
 });
 
-
-
-export { registerUserSchema, loginSchema, createTanentSchema, tanentQueryValidator, updateTanentSchema, createUserSchema, updateUserSchema, usersQueryValidator,getZodError };
-
+export {
+    registerUserSchema,
+    loginSchema,
+    createTanentSchema,
+    tanentQueryValidator,
+    updateTanentSchema,
+    createUserSchema,
+    updateUserSchema,
+    usersQueryValidator,
+    getZodError,
+};

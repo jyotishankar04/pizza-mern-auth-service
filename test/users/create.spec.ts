@@ -42,7 +42,7 @@ describe("POST /users", () => {
             // First create a tenant
             const tenant = await connection.getRepository(Tanent).save({
                 name: "Test Tenant",
-                address: "123 Test St"
+                address: "123 Test St",
             });
 
             const userData = {
@@ -52,7 +52,7 @@ describe("POST /users", () => {
                 password: "strong-password-123",
                 tanentId: tenant.id, // Use the ID of the created tenant
                 role: Roles.MANAGER,
-            }
+            };
 
             // Act: Perform the login request
             const response = await request(app)
@@ -67,7 +67,7 @@ describe("POST /users", () => {
 
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find({
-                relations: ["tanent"]
+                relations: ["tanent"],
             });
 
             expect(users.length).toBe(1);
@@ -76,22 +76,23 @@ describe("POST /users", () => {
             expect(users[0].tanent.id).toBe(tenant.id); // Verify tenant association
             expect(users[0].tanent.name).toBe(tenant.name);
         });
-        it("should return 403 if user is not admin",async () => {
-            const userToken  = jwks.token({
+        it("should return 403 if user is not admin", async () => {
+            const userToken = jwks.token({
                 sub: "1",
                 role: Roles.MANAGER,
-            })
+            });
             const userData = {
                 firstName: "Test",
                 lastName: "User",
                 email: "testuser@example.com",
                 password: "strong-password-123",
                 role: Roles.MANAGER,
-            }
-            const response = await request(app).post("/users").set("Cookie", [`accessToken=${userToken}`]).send(userData);
+            };
+            const response = await request(app)
+                .post("/users")
+                .set("Cookie", [`accessToken=${userToken}`])
+                .send(userData);
             expect(response.statusCode).toBe(403);
         });
-
-
     });
 });

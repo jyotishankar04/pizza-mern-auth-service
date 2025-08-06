@@ -1,4 +1,4 @@
-import express, {  Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { HttpError } from "http-errors";
 import logger from "./config/logger";
 import authRoutes from "./routes/auth.routes";
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/tanents", tanentRoutes);
-app.use("/users",userRoutes )
+app.use("/users", userRoutes);
 app.use((err: HttpError, req: Request, res: Response) => {
     logger.error(err.message);
     const statusCode = err.statusCode || err.status || 500;

@@ -173,6 +173,6 @@ describe("POST /tanents", () => {
                 });
             // Assert
             expect(response.statusCode).toBe(400);
-        })
-    })
+        });
+    });
 });

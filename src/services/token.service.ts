@@ -19,7 +19,10 @@ export class TokenService {
                 path.join(__dirname, "../../certs/private.pem"),
             );
         } catch (error: any) {
-            const err = createHttpError(error.statusCode || 500, error.message || "Failed to read private key");
+            const err = createHttpError(
+                error.statusCode || 500,
+                error.message || "Failed to read private key",
+            );
             throw err;
         }
         return sign(payload, privateKey, {
@@ -69,5 +72,4 @@ export class TokenService {
             throw err;
         }
     }
-    
 }

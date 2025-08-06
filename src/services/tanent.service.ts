@@ -44,7 +44,10 @@ export class TanentService {
         this.logger.info(`Getting tanent with id: ${id}`);
         return this.tanentRepository.findOneBy({ id });
     }
-    async update(id: number, { name, address }: { name?: string; address?: string }) {
+    async update(
+        id: number,
+        { name, address }: { name?: string; address?: string },
+    ) {
         this.logger.info(`Updating tanent with id: ${id}`);
         const tanent = await this.findById(id);
         if (!tanent) {

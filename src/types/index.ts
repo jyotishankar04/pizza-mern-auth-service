@@ -44,11 +44,10 @@ export enum TRoles {
     "admin",
 }
 
-
 // Users
 export interface IUserQueryParams {
     q: string;
     perPage: number;
     currentPage: number;
-    role: "customer" | "manager" | "admin";    
+    role: "customer" | "manager" | "admin";
 }
