@@ -11,5 +11,10 @@ module.exports = {
     verbose: true,
     collectCoverage: true,
     coverageProvider: "v8",
-    collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**","!**/test/**","!**/dist/**"],
+    collectCoverageFrom: [
+        "src/**/*.{js,jsx,ts,tsx}",
+        "!**/node_modules/**",
+        "!**/test/**",
+        "!**/dist/**",
+    ],
 };
