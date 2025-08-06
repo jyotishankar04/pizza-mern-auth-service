@@ -17,7 +17,7 @@ const {
     JWKS_URI,
     PRIVATE_KEY,
 } = process.env;
-console.log(`${NODE_ENV} environment variables loaded...`, process.env);
+console.log(`Database URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`);
 export const _config = {
     NODE_ENV,
     PORT,
