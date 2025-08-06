@@ -7,13 +7,16 @@ function validateEnv() {
         { key: "DB_HOST", value: _config.DB_HOST },
         { key: "DB_PORT", value: _config.DB_PORT },
         { key: "DB_USERNAME", value: _config.DB_USERNAME },
-        { key: "DB_NAME", value: _config.DB_NAME }
+        { key: "DB_NAME", value: _config.DB_NAME },
     ];
 
     const missing = required.filter(({ value }) => !value);
     if (missing.length > 0) {
-        throw new Error(`Missing required environment variables: ${missing.map(({ key }) => key).join(', ')
-            }`);
+        throw new Error(
+            `Missing required environment variables: ${missing
+                .map(({ key }) => key)
+                .join(", ")}`,
+        );
     }
 }
 
@@ -30,7 +33,7 @@ export const AppDataSource = new DataSource({
     logging: true,
     entities: [__dirname + "/../entity/*.{js,ts}"],
     migrations: [__dirname + "/../migration/*.{js,ts}"],
-    subscribers: []
+    subscribers: [],
 });
 
 // Connection helper for testing
