@@ -17,7 +17,7 @@ const {
     JWKS_URI,
     PRIVATE_KEY,
 } = process.env;
-
+console.log(`${NODE_ENV} environment variables loaded...`, process.env);
 export const _config = {
     NODE_ENV,
     PORT,
