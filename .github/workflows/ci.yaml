@@ -39,7 +39,7 @@ jobs:
 
     build-and-push-docker:
         name: Build and Push Docker
-        neeeds: build-and-test
+        needs: build-and-test
         runs-on: ubuntu-latest
         env:
             IMAGE_NAME: devsuvamjyoti/pizza-auth-service
