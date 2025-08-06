@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Brackets, Repository } from "typeorm";
 import { User } from "../entity/User";
-import { IUserQueryParams, TRoles, UserData } from "../types";
+import { IUserQueryParams, UserData } from "../types";
 import createHttpError, { HttpError } from "http-errors";
 import { Roles } from "../constants";
 import bcrypt from "bcrypt";
@@ -79,8 +80,8 @@ export class UserService {
         try {
             await this.userRepository.save(user);
             return user;
-        } catch (error) {
-            const err = createHttpError(500, "Failed to store data in DB");
+        } catch (error: any) {
+           const err = createHttpError(error.statusCode || 500, error.message || "Failed to create user");
             throw err;
         }
     }
@@ -185,8 +186,8 @@ export class UserService {
         }
         try {
             await this.userRepository.remove(user);
-        } catch (error) {
-            const err = createHttpError(500, "Failed to delete user");
+        } catch (error:any) {
+            const err = createHttpError( error.statusCode || 500, error?.message || "Failed to delete user");
             throw err;
         }
     }
