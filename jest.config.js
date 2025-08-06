@@ -9,4 +9,7 @@ module.exports = {
         ...tsJestTransformCfg,
     },
     verbose: true,
+    collectCoverage: true,
+    coverageProvider: "v8",
+    collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**","!**/test/**","!**/dist/**"],
 };
