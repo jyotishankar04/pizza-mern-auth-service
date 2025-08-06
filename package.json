@@ -10,7 +10,7 @@
         "prepare": "husky",
         "dev": "cross-env NODE_ENV=dev nodemon",
         "build": "tsc",
-        "start": "ts-node src/index.ts",
+        "start": "cross-env NODE_ENV=dev node dist/src/server.js",
         "test": "jest --runInBand --watch",
         "db:start": "docker run --rm --name pizzadb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v pgdata:/var/lib/postgresql/data  -d postgres",
         "docker:dev:build": " docker build -t auth-service:dev -f docker/dev/Dockerfile .",

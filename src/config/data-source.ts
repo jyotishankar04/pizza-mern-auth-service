@@ -1,16 +1,28 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { _config } from ".";
+import { _config } from "./";
+
+// Add validation for environment variables
+function validateEnv() {
+    const required = ['DB_HOST', 'DB_PORT', 'DB_USERNAME', 'DB_NAME'];
+    required.forEach(key => {
+        if (!_config.DB_HOST || !_config.DB_PORT || !_config.DB_USERNAME || !_config.DB_NAME) {
+            throw new Error(`Missing required environment variable: ${key}`);
+        }
+    });
+}
+
+validateEnv();
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: _config.DB_HOST,
-    port: Number(_config.DB_PORT),
+    port: parseInt(_config.DB_PORT!, 10),
     username: _config.DB_USERNAME,
-    password: _config.DB_PASSWORD,
+    password: _config.DB_PASSWORD || '', // Handle empty password case
     database: _config.DB_NAME,
     synchronize: false,
-    logging: false,
-    entities: ["src/entity/**/*.ts"],
-    migrations: ["src/migration/**/*.ts"],
+    logging: true,
+    entities: [__dirname + "/../entity/*.{js,ts}"], // Adjusted path
+    migrations: [__dirname + "/../migration/*.{js,ts}"],
     subscribers: [],
 });
