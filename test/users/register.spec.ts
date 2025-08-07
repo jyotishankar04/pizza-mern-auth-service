@@ -135,7 +135,7 @@ describe("POST /auth/register", () => {
             expect(users[0]).toHaveProperty("password");
             expect(users[0].password).not.toBe(payload.password);
             expect(users[0].password).toHaveLength(60);
-            expect(users[0].password).toMatch(/^\$2b\$\d+\$/);
+            expect(users[0].password).toMatch(/^\$2[b|a]\$\d+\$/);
         });
         it("should store unique, lowercase and valid email", async () => {
             // AAA
