@@ -4,7 +4,7 @@ import { User } from "../entity/User";
 import { IUserQueryParams, UserData } from "../types";
 import createHttpError, { HttpError } from "http-errors";
 import { Roles } from "../constants";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { Tanent } from "../entity/Tanent";
 
 export class UserService {
