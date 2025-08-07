@@ -16,7 +16,6 @@ describe("POST /tanents", () => {
     let adminToken = "";
     beforeAll(async () => {
         try {
-            
             connection = await AppDataSource.initialize();
         } catch (error) {
             console.error("Error during Data Source initialization:", error);
