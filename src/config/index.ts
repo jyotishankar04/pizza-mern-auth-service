@@ -16,6 +16,7 @@ const {
     REFRESH_TOKEN_SECRET,
     JWKS_URI,
     PRIVATE_KEY,
+    SSL_MODE,
 } = process.env;
 console.log(
     `Database URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
@@ -31,4 +32,5 @@ export const _config = {
     REFRESH_TOKEN_SECRET,
     JWKS_URI,
     PRIVATE_KEY,
+    SSL_MODE,
 } as const;
