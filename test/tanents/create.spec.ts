@@ -15,7 +15,13 @@ describe("POST /tanents", () => {
     let jwks: ReturnType<typeof createJWKSMock>;
     let adminToken = "";
     beforeAll(async () => {
-        connection = await AppDataSource.initialize();
+        try {
+            
+            connection = await AppDataSource.initialize();
+        } catch (error) {
+            console.error("Error during Data Source initialization:", error);
+            throw error;
+        }
         jwks = createJWKSMock("http://localhost:5000");
     });
 
