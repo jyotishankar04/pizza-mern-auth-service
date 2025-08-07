@@ -11,7 +11,12 @@ describe("POST /auth/login", () => {
     let connection: DataSource;
 
     beforeAll(async () => {
-        connection = await AppDataSource.initialize();
+        try {
+            connection = await AppDataSource.initialize();
+        } catch (error) {
+            console.error("Error during Data Source initialization:", error);
+            throw error;
+        }
     });
 
     beforeEach(async () => {
