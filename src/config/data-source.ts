@@ -34,7 +34,11 @@ export const AppDataSource = new DataSource({
     entities: [__dirname + "/../entity/*.{js,ts}"],
     migrations: [__dirname + "/../migration/*.{js,ts}"],
     subscribers: [],
-    ssl: _config.NODE_ENV === "production" || _config.NODE_ENV === "prod" ? { rejectUnauthorized: false } : false,
+    ssl:
+        _config.NODE_ENV === "production" || _config.NODE_ENV === "prod"
+            ? true
+            : false,
+
 });
 
 // Connection helper for testing
