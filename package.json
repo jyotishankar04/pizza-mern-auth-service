@@ -28,10 +28,12 @@
     "devDependencies": {
         "@eslint/js": "^9.32.0",
         "@types/cookie-parser": "^1.4.9",
+        "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
         "@types/jest": "^30.0.0",
         "@types/node": "^24.1.0",
         "@types/supertest": "^6.0.3",
+        "cors": "^2.8.5",
         "cross-env": "^10.0.0",
         "eslint": "^9.32.0",
         "husky": "^9.1.7",

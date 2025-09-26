@@ -17,7 +17,9 @@ const {
     JWKS_URI,
     PRIVATE_KEY,
     SSL_MODE,
+    FRONTEND_ADMIN_URL,
 } = process.env;
+
 console.log(
     `Database URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
 );
@@ -33,4 +35,5 @@ export const _config = {
     JWKS_URI,
     PRIVATE_KEY,
     SSL_MODE,
+    FRONTEND_ADMIN_URL,
 } as const;
