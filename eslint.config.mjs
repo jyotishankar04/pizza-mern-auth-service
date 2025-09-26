@@ -9,7 +9,13 @@ const __dirname = path.dirname(__filename);
 
 export default [
     {
-        ignores: ["dist", "node_modules", "eslint.config.mjs",".github", "test"],
+        ignores: [
+            "dist",
+            "node_modules",
+            "eslint.config.mjs",
+            ".github",
+            "test",
+        ],
     },
 
     // Base config for JS (non-TS files)

@@ -5,7 +5,7 @@ import authRoutes from "./routes/auth.routes";
 import tanentRoutes from "./routes/tanent.routes";
 import userRoutes from "./routes/user.routes";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
 
 // reflect-metadata typeorm needs
 import "reflect-metadata";
@@ -15,10 +15,12 @@ import { _config } from "./config";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: [_config.FRONTEND_ADMIN_URL!],
-    credentials: true
-}))
+app.use(
+    cors({
+        origin: [_config.FRONTEND_ADMIN_URL!],
+        credentials: true,
+    }),
+);
 // for jwks endpoint
 app.get("/.well-known/jwks.json", (_, res: Response) => {
     const files = fs.readFileSync(
