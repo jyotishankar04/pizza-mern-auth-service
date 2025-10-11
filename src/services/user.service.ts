@@ -6,7 +6,7 @@ import createHttpError, { HttpError } from "http-errors";
 import { Roles } from "../constants";
 import bcrypt from "bcryptjs";
 import { Tanent } from "../entity/Tanent";
-
+// TODO: Tanent spelling is wrong. Should be tenant
 export class UserService {
     private userRepository: Repository<User>;
     private tanentRepository: Repository<Tanent> | null = null;
@@ -70,8 +70,8 @@ export class UserService {
         user.password = hashedPassword;
         user.role =
             role === Roles.ADMIN ||
-            role === Roles.MANAGER ||
-            role === Roles.CUSTOMER
+                role === Roles.MANAGER ||
+                role === Roles.CUSTOMER
                 ? role
                 : Roles.CUSTOMER;
         if (tanent && tanentId) {
@@ -101,6 +101,9 @@ export class UserService {
             where: {
                 id: id,
             },
+            relations: {
+                tanent: true
+            }
         });
         return user;
     }

@@ -46,6 +46,7 @@ export class AuthController {
                 lastName: validator.data.lastName,
                 email: validator.data.email,
                 password: validator.data.password,
+                // role: Roles.ADMIN
             });
             this.logger.info(
                 `User registered successfully with id: ${user.id}`,
@@ -184,11 +185,7 @@ export class AuthController {
             success: true,
             message: "User retrieved successfully",
             data: {
-                id: user.id,
-                email: user.email,
-                role: user.role,
-                firstName: user.firstName,
-                lastName: user.lastName,
+              ...user, password: undefined
             },
         });
     }

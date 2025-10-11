@@ -28,7 +28,7 @@ export class TokenService {
             throw err;
         }
         return sign(payload, privateKey, {
-            expiresIn: "1h",
+            expiresIn: "10m",
             algorithm: "RS256",
             issuer: "auth-service",
         });
