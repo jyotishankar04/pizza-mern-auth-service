@@ -1,10 +1,15 @@
 import { HttpError } from "http-errors";
 import logger from "../config/logger";
 import { v4 as uuid } from "uuid";
-import {NextFunction, Request , Response} from "express";
+import { NextFunction, Request, Response } from "express";
 
-export const globalErrorHandler = ( err:HttpError, req:Request, res:Response, _next:NextFunction)=> {
-    const errorId = uuid()
+export const globalErrorHandler = (
+    err: HttpError,
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+) => {
+    const errorId = uuid();
     const statusCode = err.statusCode || err.status || 500;
     const isProduction = process.env.NODE_ENV === "production";
     const message = isProduction ? "Internal Server Error" : err.message;
@@ -12,7 +17,7 @@ export const globalErrorHandler = ( err:HttpError, req:Request, res:Response, _n
     res.status(statusCode).json({
         success: false,
         errorId,
-        errors:[
+        errors: [
             {
                 ref: errorId,
                 type: err.name,
@@ -21,7 +26,7 @@ export const globalErrorHandler = ( err:HttpError, req:Request, res:Response, _n
                 method: req.method,
                 location: "Server",
                 stack: isProduction ? undefined : err.stack,
-            }
-        ]
+            },
+        ],
     });
-}
+};

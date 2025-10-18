@@ -134,7 +134,7 @@ export class UserService {
             .take(query.perPage)
             .orderBy("user.id", "DESC")
             .getManyAndCount();
-       
+
         const usersWithoutPassword = result[0].map((user) => {
             const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
