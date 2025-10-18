@@ -70,8 +70,8 @@ export class UserService {
         user.password = hashedPassword;
         user.role =
             role === Roles.ADMIN ||
-                role === Roles.MANAGER ||
-                role === Roles.CUSTOMER
+            role === Roles.MANAGER ||
+            role === Roles.CUSTOMER
                 ? role
                 : Roles.CUSTOMER;
         if (tanent && tanentId) {
@@ -102,8 +102,8 @@ export class UserService {
                 id: id,
             },
             relations: {
-                tanent: true
-            }
+                tanent: true,
+            },
         });
         return user;
     }
@@ -134,9 +134,14 @@ export class UserService {
             .take(query.perPage)
             .orderBy("user.id", "DESC")
             .getManyAndCount();
+       
+        const usersWithoutPassword = result[0].map((user) => {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        });
 
         return {
-            users: result[0],
+            users: usersWithoutPassword,
             count: result[1],
         };
     }

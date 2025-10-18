@@ -185,7 +185,8 @@ export class AuthController {
             success: true,
             message: "User retrieved successfully",
             data: {
-              ...user, password: undefined
+                ...user,
+                password: undefined,
             },
         });
     }
